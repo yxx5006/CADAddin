@@ -1,12 +1,11 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
+﻿using System.Diagnostics;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Runtime;
 
-namespace Core
+namespace CADAddin
 {
-    public class Core
+    public static class Core
     {
-        [CommandMethod("count")]
         public static void GetAllObject()
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
@@ -30,6 +29,20 @@ namespace Core
 
 
             }
+        }
+
+        public static ObjectId AddToModelSapce(this Database db, Entity ent)
+        {
+            ObjectId entId;
+            using (OpenCloseTransaction trans=db.TransactionManager.StartOpenCloseTransaction())
+            {
+                BlockTable bt = trans.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
+                BlockTableRecord btr=trans.GetObject(bt[BlockTableRecord.ModelSpace],OpenMode.ForWrite) as BlockTableRecord;
+                entId = btr.AppendEntity(ent);
+                trans.AddNewlyCreatedDBObject(ent,true);
+                trans.Commit();
+            }
+            return entId;
         }
     }
 }
