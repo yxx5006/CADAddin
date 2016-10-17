@@ -30,7 +30,6 @@ namespace IMG_CAD辅助工具
         {
             object fileName = FileName;
             WordApp = new MSWord.Application();
-            //WordDoc = new MSWord.Document();
             WordDoc = WordApp.Documents.Open(ref fileName, ref _nothing, ref _nothing, ref _nothing, ref _nothing,
                 ref _nothing, ref _nothing, ref _nothing, ref _nothing, ref _nothing, ref _nothing, ref _nothing,
                 ref _nothing, ref _nothing, ref _nothing, ref _nothing);

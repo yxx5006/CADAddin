@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
 using ToOffice;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+
 namespace ToOffice
 {
     public class test
@@ -67,6 +70,8 @@ namespace ToOffice
                 else if (Object is Ole2Frame)
                 {
                     ed.WriteMessage("\n当前是OLE对象");
+                    Ole2Frame ole = (Ole2Frame) Object;
+                    Clipboard.SetDataObject(ole);
                 }
             }
         }

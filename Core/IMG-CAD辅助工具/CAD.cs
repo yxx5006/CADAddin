@@ -5,17 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
-using MSWord=Microsoft.Office.Interop.Word;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
+using MSWord = Microsoft.Office.Interop.Word;
 
 namespace IMG_CAD辅助工具
 {
     public static class Cad
     {
-        private static List<string> ImgLayers { get; set; }//保存公司内部图层
+        public static List<string> ImgLayers { get; set; }//保存公司内部图层
         private static void GetImgLayers(Database acCurDb)
         {
             List<string> Alllayers = new List<string>();
@@ -29,18 +32,59 @@ namespace IMG_CAD辅助工具
                 trans.Commit();
             }
         }
+
+        private static List<object> GetLayerObjectsByLayerName(List<string> ImgLayers)
+        {
+            List<object> objects = new List<object>();
+            Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Database acCurDb = acDoc.Database;
+            if (ImgLayers.Count != 0)
+            {
+                using (OpenCloseTransaction trans = acCurDb.TransactionManager.StartOpenCloseTransaction())
+                {
+                    foreach (string layerName in ImgLayers)
+                    {
+                        try
+                        {
+                            TypedValue[] typedValue = new TypedValue[]
+                            {
+                                new TypedValue((int)DxfCode.LayerName, layerName)
+                            };
+                            SelectionFilter filter = new SelectionFilter(typedValue);
+                            PromptSelectionResult result = ed.SelectAll(filter);
+                            SelectionSet set = result.Value;
+                            ObjectId[] ids = set.GetObjectIds();
+                            foreach (ObjectId entid in ids)
+                            {
+                                objects.Add(trans.GetObject(entid, OpenMode.ForRead));
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                            ed.WriteMessage("\n获取信息出错。");
+                        }
+                    }
+                    trans.Commit();
+                }
+
+            }
+            return objects;
+        }
+
         [CommandMethod("test")]
         public static void test()
         {
             Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
-            ProgressMeter pm=new ProgressMeter();
+            ProgressMeter pm = new ProgressMeter();
             MSWord.Application WordApp;
             MSWord.Document WordDoc;
             string filePath = Path.GetDirectoryName(acCurDb.Filename) + "\\" + Path.GetFileNameWithoutExtension(acCurDb.Filename) + "-问题记录.docx";
-            Stopwatch sw=new Stopwatch();
-            using (Transaction trans=acCurDb.TransactionManager.StartTransaction())
+            Stopwatch sw = new Stopwatch();
+            using (Transaction trans = acCurDb.TransactionManager.StartTransaction())
             {
                 sw.Start();
                 Word.CreatDocFile(filePath);
@@ -83,6 +127,49 @@ namespace IMG_CAD辅助工具
                 ed.WriteMessage(sw.Elapsed.ToString());
             }
 
+        }
+
+        [CommandMethod("test1")]
+        public static void test1()
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Database acCurDb = acDoc.Database;
+            GetImgLayers(acCurDb);
+            List<object> objects = GetLayerObjectsByLayerName(ImgLayers);
+            Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+            foreach (object Object in objects)
+            {
+                if (Object is MText)
+                {
+                    ed.WriteMessage("\n当前是多行文字");
+                }
+                else if (Object is DBText)
+                {
+                    ed.WriteMessage("\n当前是多行文字");
+                }
+                else if (Object is Ole2Frame)
+                {
+                    ed.WriteMessage("\n当前是OLE对象");
+                    Ole2Frame ole = (Ole2Frame)Object;
+
+                    ed.WriteMessage("\n"+ole.LinkName);
+
+
+
+                    //MSWord.Application WordApp;
+                    //MSWord.Document WordDoc;
+                    //string filePath = Path.GetDirectoryName(acCurDb.Filename) + "\\" + Path.GetFileNameWithoutExtension(acCurDb.Filename) + "-问题记录.docx";
+                    //Word.CreatDocFile(filePath);
+                    //Word.OpenDocFile(out WordApp, out WordDoc, filePath);
+                    //Word.CopyTable(WordApp, WordDoc, 1);
+                    //Ole2Frame ole = (Ole2Frame)Object;
+
+                    //Clipboard.SetDataObject(ole,true);
+                    //Clipboard.SetDataObject(ole);
+                    //WordDoc.Tables[1].Cell(5, 1).Range.Paste();
+                    //break;
+                }
+            }
         }
     }
 }

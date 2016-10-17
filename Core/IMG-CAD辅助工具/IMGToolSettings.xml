@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Layer LayerName="YSF">
+    <Name>叶舒帆</Name>
+  </Layer>
+  <Layer LayerName="YYL">
+    <Name>杨勇亮</Name>
+  </Layer>
+  <Layer LayerName="CZD">
+    <Name>陈志达</Name>
+  </Layer>
+  <DocTemplate CadText="编号">
+    <TemplateName>{NO}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="图号图名">
+    <TemplateName>{DrawingName}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="记录人">
+    <TemplateName>{RecName}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="截图">
+    <TemplateName>{Image}</TemplateName>
+  </DocTemplate>
+  <!--问题等级及分类较特殊，采用两位字符表示，个位字符为问题分类：划分为对应A~F级，十位字符为问题等级：划分为对应1~3级。（2D表示问题等级为2级，问题分类为D级）-->
+  <DocTemplate CadText="等级及分类">
+    <TemplateName>{Level}</TemplateName>
+    <TemplateName>{Sort}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="问题描述">
+    <TemplateName>{Disc}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="答复意见">
+    <TemplateName>{Reply}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="答复人">
+    <TemplateName>{Response}</TemplateName>
+  </DocTemplate>
+  <!--解决情况暂定为4种情况：[0，1，2，3]，0：未回复，1：已解决，2：已回复（未附变更单），3：已回复（附变更单）-->
+  <DocTemplate CadText="解决情况">
+    <TemplateName>{Result0}</TemplateName>
+    <TemplateName>{Result1}</TemplateName>
+    <TemplateName>{Result2}</TemplateName>
+    <TemplateName>{Result3}</TemplateName>
+  </DocTemplate>
+  <DocTemplate CadText="日期">
+    <TemplateName>{RecDate}</TemplateName>
+  </DocTemplate>
+  <!--
+  备注暂缺
+  <DocTemplate CadText="备注">
+    <TemplateName>{PS}</TemplateName>
+  </DocTemplate>
+  -->
+</Settings>

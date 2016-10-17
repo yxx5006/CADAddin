@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToOffice", "ToWord\ToOffice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMG-CAD辅助工具", "IMG-CAD辅助工具\IMG-CAD辅助工具.csproj", "{369FE7FB-2031-4F42-AC0D-8FD90482C522}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "钢筋文字修正", "钢筋文字修正\钢筋文字修正.csproj", "{037B11BA-320D-4CE5-B451-E471CAA0E843}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{369FE7FB-2031-4F42-AC0D-8FD90482C522}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369FE7FB-2031-4F42-AC0D-8FD90482C522}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369FE7FB-2031-4F42-AC0D-8FD90482C522}.Release|Any CPU.Build.0 = Release|Any CPU
+		{037B11BA-320D-4CE5-B451-E471CAA0E843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{037B11BA-320D-4CE5-B451-E471CAA0E843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{037B11BA-320D-4CE5-B451-E471CAA0E843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{037B11BA-320D-4CE5-B451-E471CAA0E843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
